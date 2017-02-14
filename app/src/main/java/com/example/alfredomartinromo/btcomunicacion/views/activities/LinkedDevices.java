@@ -21,7 +21,7 @@ import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAda
 
 public class LinkedDevices extends Activity implements ILinkedDevices, AdapterView.OnItemClickListener{
 
-    final ListView listview = (ListView) findViewById(R.id.listview);
+    private ListView listview;
     private ILDpresenter ldpresenter;
 
 
@@ -29,6 +29,7 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //listview = (ListView) findViewById(R.id.listview);
 
         ldpresenter.onCreate(this);
         ldpresenter.getLinkedDevices();
