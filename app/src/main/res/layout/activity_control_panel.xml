@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SelectDevice.LinkedDevicesActivity">
+    tools:context=".views.activities.IODevice">
 
     <TextView android:textSize="20dp"
         android:textColor="#000000"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivLed"
-        android:src="@mipmap/off"
+        android:src="@mipmap/ic_launcher"
         android:layout_below="@+id/tvConnDevice"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp" />

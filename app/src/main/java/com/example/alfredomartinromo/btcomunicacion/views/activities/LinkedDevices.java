@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alfredomartinromo.btcomunicacion.R;
+import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
 import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
@@ -18,25 +19,31 @@ import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAda
  * Created by alfredo.martinromo on 14/02/2017.
  */
 
-public class LinkedDevices extends Activity implements ILinkedDevices{
+public class LinkedDevices extends Activity implements ILinkedDevices, AdapterView.OnItemClickListener{
 
     final ListView listview = (ListView) findViewById(R.id.listview);
+    private ILDpresenter ldpresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ldpresenter.onCreate(this);
+        ldpresenter.getLinkedDevices();
     }
 
     @Override
     public void createList(MyBluetoothAdapter adapter){
+
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        presenter.onItemClicked(position);
+        ldpresenter.onItemClick(parent, view, position, id);
     }
 
     @Override
