@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.alfredomartinromo.btcomunicacion.R;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
+import com.example.alfredomartinromo.btcomunicacion.presenters.LDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
 /**
@@ -30,7 +31,9 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ldpresenter.onCreate(this);
+        ldpresenter = new LDpresenter(this,this);
+
+        //ldpresenter.LDpresenter(this);
         ldpresenter.getLinkedDevices();
     }
 
@@ -43,7 +46,7 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
     public void createList(MyBluetoothAdapter adapter){
 
         final ListView listview = (ListView) findViewById(R.id.listview);
-        listview.setAdapter( new MyBluetoothAdapter(getApplicationContext(), devices ) );
+        listview.setAdapter(adapter);
     }
 
     @Override

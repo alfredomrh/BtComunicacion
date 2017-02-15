@@ -1,5 +1,6 @@
 package com.example.alfredomartinromo.btcomunicacion.presenters;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +9,7 @@ import com.example.alfredomartinromo.btcomunicacion.helpers.GetLinkedDevices;
 import com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
+import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
 import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.mBluetoothAdapter;
 
@@ -20,15 +22,19 @@ public class LDpresenter implements ILDpresenter{
     private ILinkedDevices linkeddevices;
     private GetLinkedDevices getlinkeddevices = new GetLinkedDevices();
     private BluetoothDevice[] devices;
+    private MyBluetoothAdapter myBluetoothAdapter;
+    private Activity activity;
 
-    public void onCreate(ILinkedDevices view){
+    public LDpresenter(ILinkedDevices linkeddevices, Activity activity){
 
-        this.linkeddevices = view;
+        this.linkeddevices = linkeddevices;
+        this.activity = activity;
+        //aqui deberia instanciar en interactor
     }
 
     public void getLinkedDevices(){
 
-        SetBluetooth setbluetooth = new SetBluetooth();
+        SetBluetooth setbluetooth = new SetBluetooth(activity);
 
         if (mBluetoothAdapter.isEnabled()) {
 
@@ -41,8 +47,8 @@ public class LDpresenter implements ILDpresenter{
     @Override
     public void showList() {
 
-        linkeddevices.createList(linkeddevices.createListAdapter(devices));// Inversion Dependency
-
+        myBluetoothAdapter = linkeddevices.createListAdapter(devices);
+        linkeddevices.createList(myBluetoothAdapter);
     }
 
     @Override

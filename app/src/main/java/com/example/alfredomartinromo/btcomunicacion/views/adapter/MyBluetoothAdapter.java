@@ -42,3 +42,6 @@ public class MyBluetoothAdapter extends ArrayAdapter<BluetoothDevice> {
         return rowView;
     }
 }
+
+
+

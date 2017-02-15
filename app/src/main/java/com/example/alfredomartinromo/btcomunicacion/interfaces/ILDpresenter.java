@@ -9,8 +9,6 @@ import android.widget.AdapterView;
 
 public interface ILDpresenter {
 
-    public void onCreate(ILinkedDevices view);
-
     public void getLinkedDevices();
 
     public void showList();
