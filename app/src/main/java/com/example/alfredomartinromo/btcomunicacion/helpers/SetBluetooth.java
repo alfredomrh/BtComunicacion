@@ -8,6 +8,9 @@ import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
 
 /**
  * Created by alfredo on 14/02/17.
+ *
+ * Clase que optiene la referencia al adaptador bluetooth y se encarga de comprobar que existe
+ * y de activarlo en caso que esté apagado, solicitando el permiso al usuario.
  */
 
 public class SetBluetooth extends Activity{

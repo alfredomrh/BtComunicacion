@@ -18,13 +18,12 @@ import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.
 public class LDpresenter implements ILDpresenter{
 
     private ILinkedDevices linkeddevices;
-    private GetLinkedDevices getlinkeddevices;
+    private GetLinkedDevices getlinkeddevices = new GetLinkedDevices();
     private BluetoothDevice[] devices;
 
     public void onCreate(ILinkedDevices view){
 
         this.linkeddevices = view;
-
     }
 
     public void getLinkedDevices(){
@@ -33,11 +32,10 @@ public class LDpresenter implements ILDpresenter{
 
         if (mBluetoothAdapter.isEnabled()) {
 
-            getlinkeddevices = new GetLinkedDevices();
-
             devices = getlinkeddevices.GetLinkedDevices();
-
+            showList();
         }
+
     }
 
     @Override
