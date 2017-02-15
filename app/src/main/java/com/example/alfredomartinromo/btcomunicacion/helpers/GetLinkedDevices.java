@@ -33,7 +33,6 @@ public class GetLinkedDevices {
                 for (BluetoothDevice device : pairedDevices) {
                     devices[ i++ ] = device;
                 }
-
             }
 
         }

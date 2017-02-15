@@ -9,7 +9,6 @@ import com.example.alfredomartinromo.btcomunicacion.helpers.GetLinkedDevices;
 import com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
-import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
 import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.mBluetoothAdapter;
 
@@ -22,7 +21,6 @@ public class LDpresenter implements ILDpresenter{
     private ILinkedDevices linkeddevices;
     private GetLinkedDevices getlinkeddevices = new GetLinkedDevices();
     private BluetoothDevice[] devices;
-    private MyBluetoothAdapter myBluetoothAdapter;
     private Activity activity;
 
     public LDpresenter(ILinkedDevices linkeddevices, Activity activity){
@@ -39,7 +37,10 @@ public class LDpresenter implements ILDpresenter{
         if (mBluetoothAdapter.isEnabled()) {
 
             devices = getlinkeddevices.GetLinkedDevices();
-            showList();
+
+            if (devices != null) showList();
+
+            else linkeddevices.showMessage("No se encuentran dispositivos vinculados");
         }
 
     }
@@ -47,8 +48,7 @@ public class LDpresenter implements ILDpresenter{
     @Override
     public void showList() {
 
-        myBluetoothAdapter = linkeddevices.createListAdapter(devices);
-        linkeddevices.createList(myBluetoothAdapter);
+        linkeddevices.createList(linkeddevices.createListAdapter(devices));
     }
 
     @Override

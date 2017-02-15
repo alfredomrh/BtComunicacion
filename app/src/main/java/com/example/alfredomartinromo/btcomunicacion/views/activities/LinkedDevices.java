@@ -32,14 +32,12 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
         setContentView(R.layout.activity_main);
 
         ldpresenter = new LDpresenter(this,this);
-
-        //ldpresenter.LDpresenter(this);
         ldpresenter.getLinkedDevices();
     }
 
     @Override
     public MyBluetoothAdapter createListAdapter(BluetoothDevice[] devices){
-        return new MyBluetoothAdapter(getApplicationContext(), devices);
+        return new MyBluetoothAdapter(this, devices);
     }
 
     @Override
@@ -47,6 +45,7 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
 
         final ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(this);
     }
 
     @Override
