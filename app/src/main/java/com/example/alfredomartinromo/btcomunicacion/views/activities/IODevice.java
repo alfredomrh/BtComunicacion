@@ -40,6 +40,7 @@ public class IODevice extends AppCompatActivity implements IIODevice{
 
         // Obtiene la direccion mac del dispositivo remoto
         String address = getIntent().getStringExtra("address");
+        MacAddress.setText(address);
 
         iOpresenter = new IOpresenter(this, address);
 
