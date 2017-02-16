@@ -30,14 +30,14 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.linked_devices);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
 
-            Toast.makeText(this, "Bluetooth no soportado", Toast.LENGTH_LONG).show();
+            showMessage("Bluetooth no soportado");
             this.finish();
         } else if (!mBluetoothAdapter.isEnabled()) {
 
@@ -68,6 +68,9 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
     public void goToIODevice(BluetoothDevice btDevice) {
         Intent i = new Intent(LinkedDevices.this, IODevice.class);
         i.putExtra("address", btDevice.getAddress());
+
+        mBluetoothAdapter.cancelDiscovery();
+
         startActivity(i);
     }
 

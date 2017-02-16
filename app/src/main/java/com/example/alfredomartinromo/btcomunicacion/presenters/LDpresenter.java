@@ -50,14 +50,11 @@ public class LDpresenter implements ILDpresenter{
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         BluetoothDevice device = (BluetoothDevice) parent.getItemAtPosition( position );
         BluetoothDevice actual = mBluetoothAdapter.getRemoteDevice( device.getAddress() );
 
-        linkeddevices.showMessage("Esta es la direccion: " + actual);
-
-
-        //linkeddevices.goToIODevice(actual);
-
+        linkeddevices.goToIODevice(actual);
     }
 
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".views.activities.IODevice"
+    android:id="@+id/IOdevice">
+
+    <TextView android:textSize="20dp"
+        android:textColor="#000000"
+        android:id="@+id/NameDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dispositivo: "
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <Button
+        android:id="@+id/btnDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desconectar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Dirección Mac"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/NameDevice"
+        android:id="@+id/MacAddress"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btnRecibir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leer"
+        android:layout_below="@+id/MacAddress"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="122dp" />
+
+    <Button
+        android:id="@+id/btnEnviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escribir"
+        android:layout_below="@+id/btnRecibir"
+        android:layout_alignStart="@+id/btnRecibir"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:text="Lectura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnRecibir"
+        android:id="@+id/Tlectura"
+        android:layout_alignTop="@+id/btnRecibir"
+        android:layout_toStartOf="@+id/btnRecibir" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Escribir"
+        android:ems="10"
+        android:layout_alignBottom="@+id/btnEnviar"
+        android:layout_alignParentStart="true"
+        android:id="@+id/eEscritura"
+        android:layout_toStartOf="@+id/MacAddress" />
+
+</RelativeLayout>
