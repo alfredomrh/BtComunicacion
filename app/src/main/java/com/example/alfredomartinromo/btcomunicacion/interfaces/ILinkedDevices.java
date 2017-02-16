@@ -1,10 +1,6 @@
 package com.example.alfredomartinromo.btcomunicacion.interfaces;
 
 import android.bluetooth.BluetoothDevice;
-import android.view.View;
-import android.widget.AdapterView;
-
-import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
 /**
  * Created by alfredo.martinromo on 14/02/2017.
@@ -12,11 +8,14 @@ import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAda
 
 public interface ILinkedDevices {
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id);
+   // public void onItemClick(AdapterView<?> parent, View view, int position, long id);
 
-    public void createList(MyBluetoothAdapter adapter);
+    //protected void onListItemClick(ListView listView, View view, int position, long id);
 
-    public MyBluetoothAdapter createListAdapter(BluetoothDevice[] btDevices);
+
+        //public void createList(MyBluetoothAdapter adapter);
+
+    public void createListAdapter(String[] devices);
 
     public void goToIODevice(BluetoothDevice btDevice);
 

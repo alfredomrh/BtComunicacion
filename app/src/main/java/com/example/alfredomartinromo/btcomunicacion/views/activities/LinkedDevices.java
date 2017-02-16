@@ -1,12 +1,12 @@
 package com.example.alfredomartinromo.btcomunicacion.views.activities;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,16 +14,15 @@ import com.example.alfredomartinromo.btcomunicacion.R;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
 import com.example.alfredomartinromo.btcomunicacion.presenters.LDpresenter;
-import com.example.alfredomartinromo.btcomunicacion.views.adapter.MyBluetoothAdapter;
 
 /**
  * Created by alfredo.martinromo on 14/02/2017.
  */
 
-public class LinkedDevices extends Activity implements ILinkedDevices, AdapterView.OnItemClickListener{
+public class LinkedDevices extends ListActivity implements ILinkedDevices{
 
     private ILDpresenter ldpresenter;
-    private BluetoothDevice[] devices;
+   // private BluetoothDevice[] devices;
 
 
     @Override
@@ -36,22 +35,29 @@ public class LinkedDevices extends Activity implements ILinkedDevices, AdapterVi
     }
 
     @Override
-    public MyBluetoothAdapter createListAdapter(BluetoothDevice[] devices){
-        return new MyBluetoothAdapter(this, devices);
+    public void createListAdapter(String[] devices){
+
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, devices));
+
+        //return new MyBluetoothAdapter(this, devices);
     }
 
-    @Override
+    /*@Override
     public void createList(MyBluetoothAdapter adapter){
 
-        final ListView listview = (ListView) findViewById(R.id.listview);
+        final ListView listview = (ListView) findViewById(R.layout.list);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
+    }*/
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
+        super.onListItemClick(listView, view, position, id);
+        ldpresenter.onItemClick(listView, view, position, id);
     }
 
-    @Override
+   /* @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ldpresenter.onItemClick(parent, view, position, id);
-    }
+    }*/
 
     @Override
     public void goToIODevice(BluetoothDevice btDevice) {

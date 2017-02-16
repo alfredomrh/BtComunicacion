@@ -16,28 +16,34 @@ import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.
 
 public class GetLinkedDevices {
 
+    private String[] mydevices;
     private BluetoothDevice[] devices;
 
-    public BluetoothDevice[] GetLinkedDevices() {
+    public String[] GetLinkedDevices() {
 
         if (mBluetoothAdapter.isEnabled()) {
+
             // Listar los dispositivos emparejados
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
             // If there are paired devices
             if (pairedDevices.size() > 0) {
 
-                BluetoothDevice[] devices = new BluetoothDevice[pairedDevices.size()];
+                devices = new BluetoothDevice[pairedDevices.size()];
+                mydevices = new String[pairedDevices.size()];
                 // Loop through paired devices
                 int i = 0;
+                int j = 0;
 
                 for (BluetoothDevice device : pairedDevices) {
+                    mydevices[j++] = device.toString();
                     devices[ i++ ] = device;
                 }
+                //mydevices[0] = "SondaPrueba";
             }
 
         }
 
-        return devices;
+        return mydevices;
     }
 
 }

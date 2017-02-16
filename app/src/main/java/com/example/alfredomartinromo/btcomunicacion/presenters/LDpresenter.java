@@ -20,7 +20,7 @@ public class LDpresenter implements ILDpresenter{
 
     private ILinkedDevices linkeddevices;
     private GetLinkedDevices getlinkeddevices = new GetLinkedDevices();
-    private BluetoothDevice[] devices;
+    private String[] devices;
     private Activity activity;
 
     public LDpresenter(ILinkedDevices linkeddevices, Activity activity){
@@ -48,7 +48,7 @@ public class LDpresenter implements ILDpresenter{
     @Override
     public void showList() {
 
-        linkeddevices.createList(linkeddevices.createListAdapter(devices));
+        linkeddevices.createListAdapter(devices);
     }
 
     @Override
