@@ -15,7 +15,7 @@ public interface ILinkedDevices {
 
         //public void createList(MyBluetoothAdapter adapter);
 
-    public void createListAdapter(String[] devices);
+    public void createListAdapter(BluetoothDevice[] devices);
 
     public void goToIODevice(BluetoothDevice btDevice);
 

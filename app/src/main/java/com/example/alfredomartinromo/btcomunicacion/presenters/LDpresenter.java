@@ -1,16 +1,15 @@
 package com.example.alfredomartinromo.btcomunicacion.presenters;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.example.alfredomartinromo.btcomunicacion.helpers.GetLinkedDevices;
-import com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth;
+import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDinteractor;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
+import com.example.alfredomartinromo.btcomunicacion.models.LDinteractor;
 
-import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.mBluetoothAdapter;
+import static com.example.alfredomartinromo.btcomunicacion.views.activities.LinkedDevices.mBluetoothAdapter;
 
 /**
  * Created by alfredo on 14/02/17.
@@ -19,29 +18,27 @@ import static com.example.alfredomartinromo.btcomunicacion.helpers.SetBluetooth.
 public class LDpresenter implements ILDpresenter{
 
     private ILinkedDevices linkeddevices;
-    private GetLinkedDevices getlinkeddevices = new GetLinkedDevices();
-    private String[] devices;
-    private Activity activity;
+    private ILDinteractor ilDinteractor;
+    private BluetoothDevice[] devices;
 
-    public LDpresenter(ILinkedDevices linkeddevices, Activity activity){
+    public LDpresenter(ILinkedDevices linkeddevices){
 
         this.linkeddevices = linkeddevices;
-        this.activity = activity;
-        //aqui deberia instanciar en interactor
+        ilDinteractor = new LDinteractor();
+
     }
 
     public void getLinkedDevices(){
 
-        SetBluetooth setbluetooth = new SetBluetooth(activity);
-
         if (mBluetoothAdapter.isEnabled()) {
 
-            devices = getlinkeddevices.GetLinkedDevices();
+            devices = ilDinteractor.GetLinkedDevices();
 
             if (devices != null) showList();
 
             else linkeddevices.showMessage("No se encuentran dispositivos vinculados");
-        }
+
+            }
 
     }
 
@@ -56,7 +53,10 @@ public class LDpresenter implements ILDpresenter{
         BluetoothDevice device = (BluetoothDevice) parent.getItemAtPosition( position );
         BluetoothDevice actual = mBluetoothAdapter.getRemoteDevice( device.getAddress() );
 
-        linkeddevices.goToIODevice(actual);
+        linkeddevices.showMessage("Esta es la direccion: " + actual);
+
+
+        //linkeddevices.goToIODevice(actual);
 
     }
 

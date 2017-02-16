@@ -1,6 +1,8 @@
 package com.example.alfredomartinromo.btcomunicacion.views.activities;
 
+import android.app.Activity;
 import android.app.ListActivity;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,42 +24,45 @@ import com.example.alfredomartinromo.btcomunicacion.presenters.LDpresenter;
 public class LinkedDevices extends ListActivity implements ILinkedDevices{
 
     private ILDpresenter ldpresenter;
-   // private BluetoothDevice[] devices;
-
+    private static final int REQUEST_ENABLE_BT = 3;
+    public static BluetoothAdapter mBluetoothAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ldpresenter = new LDpresenter(this,this);
-        ldpresenter.getLinkedDevices();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        // If the adapter is null, then Bluetooth is not supported
+        if (mBluetoothAdapter == null) {
+
+            Toast.makeText(this, "Bluetooth no soportado", Toast.LENGTH_LONG).show();
+            this.finish();
+        } else if (!mBluetoothAdapter.isEnabled()) {
+
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+
+        } else {
+
+            ldpresenter = new LDpresenter(this);
+            ldpresenter.getLinkedDevices();
+        }
     }
 
     @Override
-    public void createListAdapter(String[] devices){
+    public void createListAdapter(BluetoothDevice[] devices){
 
-        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, devices));
+        setListAdapter(new ArrayAdapter<BluetoothDevice>(this, android.R.layout.simple_list_item_1, devices));
 
-        //return new MyBluetoothAdapter(this, devices);
     }
 
-    /*@Override
-    public void createList(MyBluetoothAdapter adapter){
-
-        final ListView listview = (ListView) findViewById(R.layout.list);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(this);
-    }*/
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
         ldpresenter.onItemClick(listView, view, position, id);
     }
-
-   /* @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    }*/
 
     @Override
     public void goToIODevice(BluetoothDevice btDevice) {
@@ -73,6 +78,15 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e("ERROR:", e.getMessage());
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if( requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK ) {
+
+            ldpresenter = new LDpresenter(this);
+            ldpresenter.getLinkedDevices();
         }
     }
 }
