@@ -6,21 +6,17 @@ import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 
 import com.example.alfredomartinromo.btcomunicacion.interfaces.IIOinteractor;
-import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
-import com.example.alfredomartinromo.btcomunicacion.views.activities.LinkedDevices;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
-
 
 /**
  * Created by alfredo.martinromo on 16/02/2017.
  */
 
 public class IOinteractor implements IIOinteractor{
-
-    private ILinkedDevices linkeddevices = new LinkedDevices();
 
     // Unique UUID for this application
     private static final UUID APP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -31,74 +27,44 @@ public class IOinteractor implements IIOinteractor{
 
     // Control asíncrono
     private ConnectAsyncTask connectAsyncTask;
+    private ConnectedThread mThread;
 
     public IOinteractor(String address) {
 
         BluetoothDevice device  = btAdapter.getRemoteDevice(address);
 
         connectAsyncTask = new ConnectAsyncTask();
-        connectAsyncTask.execute( device );
+        connectAsyncTask.execute(device);
     }
 
-    public String recibirInfo() {
+    @Override
+    public String recibirInfo() { //read(byte[])
 
-        linkeddevices.showMessage("Entrando a leer el sensor");
-        String message = "";
-        int bufferSize = 256;
-        byte[] buffer = new byte[bufferSize];
+        if (this.btSocket != null) return mThread.read();
 
-        if (btSocket != null) {
+        else {
 
-            try {
-
-                InputStream instream = btSocket.getInputStream();
-                int bytesRead = -1;
-
-                while (true) {
-
-                    bytesRead = instream.read(buffer);
-
-                    if (bytesRead != -1) {
-
-                        while ((bytesRead == bufferSize) && (buffer[bufferSize - 1] != 0)) {
-                            message = message + new String(buffer, 0, bytesRead);
-                            bytesRead = instream.read(buffer);
-                        }
-
-                        message = message + new String(buffer, 0, bytesRead - 1);
-
-                    }
-                }
-
-            }catch(IOException e){
-                linkeddevices.showMessage("Error de comunicación con Bluetooth." + e.getMessage());
-            }
-
-        }
-
-        return message;
-    }
-
-    public void enviarInfo(byte[] bytes) {
-        if (this.btSocket != null) {
-            try {
-
-                btSocket.getOutputStream().write(bytes);
-
-            } catch (IOException e) {
-                linkeddevices.showMessage("Error de comunicación con Bluetooth." + e.getMessage());
-            }
+            //showMessage("No hay conexion establecida");
+            return null;
         }
     }
 
+    @Override
+    public void enviarInfo(byte[] bytes) { //write(byte[])
+
+        if (this.btSocket != null) mThread.write(bytes);
+
+        //else showMessage("No hay conexion establecida");
+
+    }
+
+    @Override
     public void desconectarBT() {
-        if (btSocket != null) {
-            try {
-                btSocket.close();
-            } catch (IOException e) {
-                linkeddevices.showMessage("Error de comunicación con Bluetooth." + e.getMessage());
-            }
-        }
+
+        if (btSocket != null) mThread.cancel();
+
+       // else showMessage("No hay conexion establecida");
+
     }
 
     /**
@@ -119,7 +85,7 @@ public class IOinteractor implements IIOinteractor{
                 mmSocket.connect();
 
             } catch (Exception e) {
-                linkeddevices.showMessage("ERR: " + e.getMessage());
+                //showMessage("ERR: " + e.getMessage());
             }
 
             return mmSocket;
@@ -132,22 +98,85 @@ public class IOinteractor implements IIOinteractor{
 
         @Override
         protected void onPostExecute(BluetoothSocket result) {
-            btSocket = result;
-            try {
-                btSocket.getOutputStream().write("2".toString().getBytes());
-                InputStream is = btSocket.getInputStream();
 
-                char data = (char)is.read( );
-                if( data == '1' ) {
-                    linkeddevices.showMessage("Data Uno");
-                }
-            } catch (IOException e) {
-                linkeddevices.showMessage("Error de comunicación con Bluetooth." + e.getMessage());
-            }
+            mThread = new ConnectedThread(result);
+
         }
 
         public void setProgressPercent(Integer progressPercent) {
             // Para utilizar el progreso
+        }
+    }
+
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+
+            // Get the input and output streams, using temp objects because
+            // member streams are final
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) { }
+
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+        }
+
+        public String read() {
+            String message = "";
+            int bufferSize = 256;
+            byte[] buffer = new byte[bufferSize];
+
+            if (btSocket != null) {
+
+                try {
+
+                    int bytesRead = -1;
+
+                    while (true) {
+
+                        bytesRead = mmInStream.read(buffer);
+
+                        if (bytesRead != -1) {
+
+                            while ((bytesRead == bufferSize) && (buffer[bufferSize - 1] != 0)) {
+                                message = message + new String(buffer, 0, bytesRead);
+                                bytesRead = mmInStream.read(buffer);
+                            }
+
+                            message = message + new String(buffer, 0, bytesRead - 1);
+
+                        }
+                    }
+
+                }catch(IOException e){
+                    //showMessage("Error de comunicación con Bluetooth." + e.getMessage());
+                }
+
+            }
+
+            return message;
+        }
+
+        /* Call this from the main activity to send data to the remote device */
+        public void write(byte[] bytes) {
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) { }
+        }
+
+        /* Call this from the main activity to shutdown the connection */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { }
         }
     }
 
