@@ -52,7 +52,7 @@ public class IODevice extends AppCompatActivity implements IIODevice{
         btnRecibir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (mState == true) iOpresenter.recibirInfo();
+               if (mState) iOpresenter.recibirInfo();
                else showMessage("Conexión no establecida");
             }
         });
@@ -60,7 +60,7 @@ public class IODevice extends AppCompatActivity implements IIODevice{
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mState == true) iOpresenter.enviarInfo(eEscritura.getText().toString());
+                if (mState) iOpresenter.enviarInfo(eEscritura.getText().toString());
                 else showMessage("Conexión no establecida");
             }
         });
@@ -68,7 +68,10 @@ public class IODevice extends AppCompatActivity implements IIODevice{
         btnDesconectar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mState == true) iOpresenter.desconectarBT();
+                if (mState) {
+                    iOpresenter.desconectarBT();
+                    finish();
+                }
                 else showMessage("Conexión no establecida");
             }
         });
