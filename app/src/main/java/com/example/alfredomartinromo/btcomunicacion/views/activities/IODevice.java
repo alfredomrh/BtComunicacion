@@ -26,6 +26,8 @@ public class IODevice extends AppCompatActivity implements IIODevice{
     private TextView Tlectura;
     private EditText eEscritura;
 
+    public static Boolean mState = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,23 +52,24 @@ public class IODevice extends AppCompatActivity implements IIODevice{
         btnRecibir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iOpresenter.recibirInfo();
+               if (mState == true) iOpresenter.recibirInfo();
+               else showMessage("Conexión no establecida");
             }
         });
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iOpresenter.enviarInfo(eEscritura.getText().toString());
+                if (mState == true) iOpresenter.enviarInfo(eEscritura.getText().toString());
+                else showMessage("Conexión no establecida");
             }
         });
 
         btnDesconectar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iOpresenter.desconectarBT();
-                    //ir a LinkedDevices
-
+                if (mState == true) iOpresenter.desconectarBT();
+                else showMessage("Conexión no establecida");
             }
         });
     }

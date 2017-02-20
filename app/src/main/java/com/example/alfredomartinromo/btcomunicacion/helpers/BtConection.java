@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+import com.example.alfredomartinromo.btcomunicacion.views.activities.IODevice;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,31 +29,54 @@ public class BtConection {
 
     private String lectura;
 
-
     public BtConection(String address) {
 
         BluetoothDevice device  = btAdapter.getRemoteDevice(address);
 
         connectThread = new ConnectThread(device);
+        connectThread.start();
 
     }
 
-    public void writeFlow(byte[] bytes){
+    public void writeFlow(byte[] out){
 
-        connectedThread.write(bytes);
+        // Create temporary object
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            if (IODevice.mState != true) return;
+            r = connectedThread;
+        }
+        // Perform the write unsynchronized
+        r.write(out);
 
     }
 
     public String readFlow(){
 
-        connectedThread.run();
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            if (IODevice.mState != true) return "No Conectado";
+            r = connectedThread;
+        }
 
+        //r.start();
         return lectura;
     }
 
     public void cancel(){
 
-        connectedThread.cancel();
+        // Create temporary object
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            if (IODevice.mState != true) return;
+            r = connectedThread;
+        }
+        // Perform the write unsynchronized
+        r.cancel();
+
     }
 
     /**
@@ -98,13 +123,16 @@ public class BtConection {
                 return;
             }
 
+            IODevice.mState = true;
             // Start the connected thread
             connectedThread = new ConnectedThread(mmSocket);
+            connectedThread.start();
         }
 
         public void cancel() {
             try {
                 mmSocket.close();
+                IODevice.mState = false;
             } catch (IOException e) {
 
             }
@@ -196,6 +224,7 @@ public class BtConection {
         public void cancel() {
             try {
                 mmSocket.close();
+                IODevice.mState = false;
             } catch (IOException e) {
                 //Log.e(TAG, "close() of connect socket failed", e);
             }

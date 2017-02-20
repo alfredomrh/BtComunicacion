@@ -31,7 +31,6 @@ public class IOpresenter implements IIOpresenter {
     @Override
     public void enviarInfo(String info) {
 
-
         iOinteractor.enviarInfo(info.getBytes());
 
     }
