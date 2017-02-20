@@ -1,12 +1,11 @@
 package com.example.alfredomartinromo.btcomunicacion.models;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDinteractor;
 
 import java.util.Set;
-
-import static com.example.alfredomartinromo.btcomunicacion.views.activities.LinkedDevices.mBluetoothAdapter;
 
 /**
  * Created by alfredo.martinromo on 16/02/2017.
@@ -15,8 +14,10 @@ import static com.example.alfredomartinromo.btcomunicacion.views.activities.Link
 public class LDinteractor implements ILDinteractor {
 
     private BluetoothDevice[] devices;
+    private BluetoothAdapter mBluetoothAdapter;
 
-    public BluetoothDevice[] GetLinkedDevices() {
+
+    public BluetoothDevice[] GetLinkedDevices(BluetoothAdapter mBluetoothAdapter) {
 
         if (mBluetoothAdapter.isEnabled()) {
             // Listar los dispositivos emparejados

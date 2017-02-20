@@ -2,10 +2,12 @@ package com.example.alfredomartinromo.btcomunicacion.views.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alfredomartinromo.btcomunicacion.R;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.IIODevice;
@@ -48,7 +50,7 @@ public class IODevice extends AppCompatActivity implements IIODevice{
         btnRecibir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tlectura.setText(iOpresenter.recibirInfo()); //aqui deberiamos llamar al presenter
+                iOpresenter.recibirInfo();
             }
         });
 
@@ -63,7 +65,26 @@ public class IODevice extends AppCompatActivity implements IIODevice{
             @Override
             public void onClick(View v) {
                 iOpresenter.desconectarBT();
+                    //ir a LinkedDevices
+
             }
         });
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+        try {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("ERROR:", e.getMessage());
+        }
+    }
+
+    @Override
+    public void mostrarLectura(String lectura) {
+
+        Tlectura.setText(lectura);
+
     }
 }

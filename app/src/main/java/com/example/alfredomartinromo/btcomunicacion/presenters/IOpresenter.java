@@ -22,9 +22,10 @@ public class IOpresenter implements IIOpresenter {
     }
 
     @Override
-    public String recibirInfo() {
+    public void recibirInfo() {
 
-        return iOinteractor.recibirInfo();
+        ioDevice.mostrarLectura(iOinteractor.recibirInfo());
+
     }
 
     @Override
@@ -38,7 +39,8 @@ public class IOpresenter implements IIOpresenter {
     @Override
     public void desconectarBT() {
 
-        iOinteractor.desconectarBT();
+      iOinteractor.desconectarBT();
+      ioDevice.showMessage("Dispositivo desconectado");
 
     }
 }

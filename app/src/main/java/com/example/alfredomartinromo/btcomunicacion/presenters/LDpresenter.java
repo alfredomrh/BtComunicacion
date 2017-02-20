@@ -1,5 +1,6 @@
 package com.example.alfredomartinromo.btcomunicacion.presenters;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,8 +10,6 @@ import com.example.alfredomartinromo.btcomunicacion.interfaces.ILDpresenter;
 import com.example.alfredomartinromo.btcomunicacion.interfaces.ILinkedDevices;
 import com.example.alfredomartinromo.btcomunicacion.models.LDinteractor;
 
-import static com.example.alfredomartinromo.btcomunicacion.views.activities.LinkedDevices.mBluetoothAdapter;
-
 /**
  * Created by alfredo on 14/02/17.
  */
@@ -19,11 +18,12 @@ public class LDpresenter implements ILDpresenter{
 
     private ILinkedDevices linkeddevices;
     private ILDinteractor ilDinteractor;
-    private BluetoothDevice[] devices;
+    private BluetoothAdapter mBluetoothAdapter;
 
-    public LDpresenter(ILinkedDevices linkeddevices){
+    public LDpresenter(ILinkedDevices linkeddevices, BluetoothAdapter mBluetoothAdapter){
 
         this.linkeddevices = linkeddevices;
+        this.mBluetoothAdapter = mBluetoothAdapter;
         ilDinteractor = new LDinteractor();
 
     }
@@ -32,20 +32,14 @@ public class LDpresenter implements ILDpresenter{
 
         if (mBluetoothAdapter.isEnabled()) {
 
-            devices = ilDinteractor.GetLinkedDevices();
+            if (ilDinteractor.GetLinkedDevices(mBluetoothAdapter) != null)
 
-            if (devices != null) showList();
+                linkeddevices.createListAdapter(ilDinteractor.GetLinkedDevices(mBluetoothAdapter));
 
             else linkeddevices.showMessage("No se encuentran dispositivos vinculados");
 
             }
 
-    }
-
-    @Override
-    public void showList() {
-
-        linkeddevices.createListAdapter(devices);
     }
 
     @Override

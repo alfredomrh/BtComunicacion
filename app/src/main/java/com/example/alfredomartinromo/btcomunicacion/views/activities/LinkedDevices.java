@@ -25,7 +25,7 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
 
     private ILDpresenter ldpresenter;
     private static final int REQUEST_ENABLE_BT = 3;
-    public static BluetoothAdapter mBluetoothAdapter = null;
+    private static BluetoothAdapter mBluetoothAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
 
         } else {
 
-            ldpresenter = new LDpresenter(this);
+            ldpresenter = new LDpresenter(this, mBluetoothAdapter);
             ldpresenter.getLinkedDevices();
         }
     }
@@ -88,7 +88,7 @@ public class LinkedDevices extends ListActivity implements ILinkedDevices{
 
         if( requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK ) {
 
-            ldpresenter = new LDpresenter(this);
+            ldpresenter = new LDpresenter(this, mBluetoothAdapter);
             ldpresenter.getLinkedDevices();
         }
     }

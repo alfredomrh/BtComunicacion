@@ -5,4 +5,9 @@ package com.example.alfredomartinromo.btcomunicacion.interfaces;
  */
 
 public interface IIODevice {
+
+    public void showMessage(String message);
+
+    public void mostrarLectura(String lectura);
+
 }

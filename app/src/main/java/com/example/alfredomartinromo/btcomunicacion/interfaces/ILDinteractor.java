@@ -1,5 +1,6 @@
 package com.example.alfredomartinromo.btcomunicacion.interfaces;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 /**
@@ -8,5 +9,5 @@ import android.bluetooth.BluetoothDevice;
 
 public interface ILDinteractor {
 
-    BluetoothDevice[] GetLinkedDevices();
+    BluetoothDevice[] GetLinkedDevices(BluetoothAdapter bluetoothAdapter);
 }
