@@ -78,6 +78,13 @@ public class IODevice extends AppCompatActivity implements IIODevice{
     }
 
     @Override
+    protected void onPause(){
+        iOpresenter.onPause();
+        super.onPause();
+
+    }
+
+    @Override
     public void showMessage(String message) {
 
         try {

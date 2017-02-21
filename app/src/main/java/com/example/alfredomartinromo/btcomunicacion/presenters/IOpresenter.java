@@ -22,6 +22,12 @@ public class IOpresenter implements IIOpresenter {
     }
 
     @Override
+    public void onPause(){
+
+        iOinteractor.desconectarBT();
+    }
+
+    @Override
     public void recibirInfo() {
 
         ioDevice.mostrarLectura(iOinteractor.recibirInfo());

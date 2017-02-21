@@ -6,6 +6,8 @@ package com.example.alfredomartinromo.btcomunicacion.interfaces;
 
 public interface IIOpresenter {
 
+    public void onPause();
+
     public void recibirInfo();
 
     public void enviarInfo(String info);
